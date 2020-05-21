@@ -44,8 +44,46 @@ def betolt_kepek():
     
     return Xtrain, Xtest, dtrain, dtest
 
-def offlineLearning(Xtrain, dtrain)
+def offlineLearning(Xtrain, dtrain):
+    n = len(Xtrain[0])
+    w = np.random.rand(n, 1)
+    epoch = 0
+    
+    while True:
+        v = Xtrain * w
+        y = logsig(v)
+        e = y - dtrain
+        g = np.transpose(Xtrain) * np.multiply(e, gradiens(v))
+        w = w - lr * g
+        E = np.sum(np.power(e, 2))
+        
+        if stop(E, epoch):
+            break
+        
+        epoch += 1
+        
+    return w, E
+        
+def stop(E, epoch):
+    if epoch > 10000:
+        return True
+    
+    if len(E) < 10:
+        return False
+    
+    end = len(E) - 1
+    
+    if E[end - 9] < E[end] or E[end - 9] - E[end] < 0.001 :
+        return True
+    
+    return False
 
+def logsig(v):
+    for i in range(0, len(v)):
+        v[i][0] = gradiens(v[i][0])
+        
+    return v
+    
 def sigmoid(x):
     return 1/(1 + math.exp(-x))
 
@@ -54,6 +92,4 @@ def gradiens(x):
 
 
 Xtrain, Xtest, dtrain, dtest = betolt_kepek()
-
-
-betolt_kepek()
+offlineLearning(Xtrain, dtrain)
