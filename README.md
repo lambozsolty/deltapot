@@ -1,4 +1,4 @@
-# Delta
+# Delta szabály
 
 ### Megoldás:
 -Képek beolvasása  
